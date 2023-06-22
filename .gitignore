@@ -1,0 +1,8 @@
+/dist/
+/node_modules/
+/media/
+/data/
+/public/
+.env
+.DS_Store
+*.zip
