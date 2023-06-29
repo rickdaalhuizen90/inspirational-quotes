@@ -4,7 +4,7 @@
   "description": "Generate inspirational quotes and publish them to social media",
   "scripts": {
     "start": "npx ts-node src/app.ts",
-    "tasks": "npx ts-node src/tasks.ts",
+    "serve": "pm2 start npm --name 'inspirational-quotes' -- start",
     "import": "mongoimport --db LocalDB --collection Quotes --type csv --headerline --ignoreBlanks --file data/quotes.csv",
     "mongodb": "mongod --dbpath=/data"
   },
