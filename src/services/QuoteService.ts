@@ -1,12 +1,14 @@
+import 'dotenv/config';
 import { Document } from 'mongodb';
 import { ImageGenerator } from '../utils/ImageUtils';
-import { backgrounds } from '../models/ImageModel';
+import { scanImageDirectory, imagePath } from '../models/ImageModel';
 import { getRandomQuote } from '../models/QuoteModel';
 import { getCurrentDate } from '../utils/DateUtils';
 import { Db } from 'mongodb';
 import { Request, Response } from 'express';
+import * as fs from 'fs';
 
-const generator = new ImageGenerator({author: '@foobar'});
+const generator = new ImageGenerator({author: process.env.AUTHOR??''});
 const startTime = performance.now();
 const endTime = performance.now();
 const executionTime = endTime - startTime;
@@ -21,15 +23,18 @@ export async function generateRandomQuote(req: Request, res: Response) {
       return;
     }
 
+    const backgrounds = await scanImageDirectory(imagePath);
     const backgroundIndex = Math.floor(Math.random() * backgrounds.length);
     const filename = await generator.generateImage(backgrounds[backgroundIndex], quote.quote, quote.author);
+    const url = `${process.env.SITE_URL}/images/${filename.replace(/^.*[\\\/]/, '')}`;
+    const size = await fs.statSync(filename).size;
 
     const feedItem = {
       title: quote.author.trim(),
       description: quote.quote.trim(),
       date: getCurrentDate(),
-      url: filename,
-      enclosure: { url: filename, type: 'image/png' },
+      url: url,
+      enclosure: { file: filename, url: url, size: size, type: 'image/png'},
       categories: quote.category.split(',').map((category: string) => category.trim())
     };
 

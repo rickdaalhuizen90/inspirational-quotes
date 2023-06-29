@@ -1,8 +1,6 @@
 import fs from 'fs';
 import crypto from 'crypto';
-import { createCanvas, registerFont, loadImage, CanvasRenderingContext2D, Image} from 'canvas';
-
-registerFont('./src/assets/fonts/Lora-Medium.ttf', { family: 'Lora' });
+import { createCanvas, loadImage, CanvasRenderingContext2D, Image, registerFont} from 'canvas';
 
 interface ImageGeneratorOptions {
   author: string;
@@ -16,6 +14,8 @@ class ImageGenerator {
   private output: string;
 
   constructor(options: ImageGeneratorOptions) {
+    registerFont('./src/assets/fonts/Lora-Medium.ttf', { family: 'Lora' });
+
     this.author = options.author;
     this.fontFamily = options.fontFamily ?? 'Lora';
     this.output = options.output ?? './dist';

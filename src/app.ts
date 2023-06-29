@@ -1,13 +1,13 @@
+import 'dotenv/config';
 import express, { Application } from 'express';
 import { generateRSSFeed } from './services/FeedService';
 import { generateRandomQuote } from './services/QuoteService';
 import { Db, MongoClient } from 'mongodb';
-import 'dotenv/config';
 
 export const app: Application = express();
 const port: number = 3000;
-const url = 'mongodb://127.0.0.1:27017';
-const dbName = 'LocalDB';//process.env.DB_NAME;
+const url = process.env.DB_URL??'';
+const dbName = process.env.DB_NAME;
 
 MongoClient.connect(url)
   .then(async (client: MongoClient) => {
@@ -18,6 +18,7 @@ MongoClient.connect(url)
     app.get('/feed', generateRSSFeed);
     app.get('/generate', generateRandomQuote);
 
+    app.use('/images', express.static('dist'));
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

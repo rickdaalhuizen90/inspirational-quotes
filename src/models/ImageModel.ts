@@ -1,12 +1,17 @@
-// Background images and fonts
-const backgrounds = [
-  './media/background1.jpg',
-  './media/background2.jpg',
-  './media/background3.jpg',
-  './media/background4.jpg',
-  './media/background5.jpg',
-  './media/background6.jpg',
-  // Add more background images
-];
+import 'dotenv/config';
+import * as fs from 'fs/promises';
 
-export { backgrounds };
+const imagePath = process.env.MEDIA_DIR??'./media';
+
+async function scanImageDirectory(directoryPath: string) {
+  try {
+    const files = await fs.readdir(directoryPath);
+    const imageFiles = files.filter(file => /\.(jpg|jpeg|png)$/i.test(file));
+    return imageFiles.map(file => `${directoryPath}/${file}`);
+  } catch (err) {
+    console.error('Error scanning image directory:', err);
+    return [];
+  }
+}
+
+export { scanImageDirectory, imagePath };
