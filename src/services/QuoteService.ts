@@ -3,9 +3,9 @@ import { Document } from 'mongodb';
 import { ImageGenerator } from '../utils/ImageUtils';
 import { scanImageDirectory, imagePath } from '../models/ImageModel';
 import { getRandomQuote } from '../models/QuoteModel';
-import { getCurrentDate } from '../utils/DateUtils';
 import { Db } from 'mongodb';
 import { Request, Response } from 'express';
+import { Item } from 'feed';
 import * as fs from 'fs';
 
 const generator = new ImageGenerator({author: process.env.AUTHOR??''});
@@ -29,13 +29,13 @@ export async function generateRandomQuote(req: Request, res: Response) {
     const url = `${process.env.SITE_URL}/images/${filename.replace(/^.*[\\\/]/, '')}`;
     const size = await fs.statSync(filename).size;
 
-    const feedItem = {
+    const feedItem: Item = {
       title: quote.author.trim(),
       description: quote.quote.trim(),
-      date: getCurrentDate(),
-      url: url,
-      enclosure: { file: filename, url: url, size: size, type: 'image/png'},
-      categories: quote.category.split(',').map((category: string) => category.trim())
+      date: new Date(),
+      link: url,
+      enclosure: { url: url, length: size, type: 'image/png'},
+      content: quote.category
     };
 
     await db.collection('RSSFeed').insertOne(feedItem);
