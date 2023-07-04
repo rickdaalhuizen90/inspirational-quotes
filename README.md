@@ -1,57 +1,49 @@
-# Inspirational Quotes
+# text-image-gen
 
-This is a Node.js application that generates and publishes inspirational quote images. It utilizes the `node-canvas` package for image generation and the `rss` package to create an RSS feed.
+text-image-gen is a Node.js library that enables generating images with text overlays using the HTML5 Canvas and Node.js's fs module. It provides a simple interface to create visually appealing images with customizable text, suitable for various use cases such as generating motivational quotes, social media posts, and more.
 
-## Getting Started
-To run the application, follow these steps:
+## Installation
 
-1. Install the necessary dependencies by running the command:
-   ```bash
-   npm install
-   ```
+You can install text-image-gen using npm:
 
-2. Start MongoDB by running the command:
-   ```bash
-   docker run --rm --name default -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password123 -e MONGO_INITDB_DATABASE=test -v /tmp/mongo-data:/data/db mongo
-   ```
+```bash
+npm install text-image-gen
+```
 
-3. Start the application by running the command:
-   ```bash
-   npm start
-   ```
+## Usage
 
-## Routes
-- `/feed` - Retrieves the RSS feed.
-- `/generate` - Generates new quote images. You can use `curl -XGET http://localhost:3000/generate` to trigger the generation.
+Here's a basic example of how to use the library to generate an image with text overlay:
 
-## Installation and Setup
-To set up the application, perform the following steps:
+```javascript
+const { ImageGenerator, ImageGeneratorOptions } = require('text-image-gen');
 
-1. **Environment Setup:**
-   - Run `npm install` to install the necessary dependencies, including the `node-canvas` package for image generation.
+const generatorOptions = {
+  author: 'Your Name',
+  fontFamily: 'Lora',
+  output: './dist',
+};
 
-2. **Prepare the Database:**
-   - Set up a MongoDB database with a collection of motivational quotes. You can use the provided Docker command to start a MongoDB instance.
+const generator = new ImageGenerator(generatorOptions);
 
-## Image Generation
-The image generation process in the application involves the following steps:
+const path = './path/to/background/image.jpg';
+const quote = 'Your quote goes here.';
+const additionalText = 'Additional text goes here.';
 
-1. Utilizing the `node-canvas` package, a canvas and context are created.
-2. Random selection of a quote, background image, and font.
-3. Drawing the quote on the canvas using the chosen font and background.
-4. Saving the canvas as an image file.
+generator.generateImage(path, quote, additionalText)
+  .then(generatedImagePath => {
+    console.log('Image generated:', generatedImagePath);
+  })
+  .catch(error => {
+    console.error('Error generating image:', error);
+  });
+```
 
-## Instagram Posting
-@todo
+Please refer to the library's documentation for detailed usage instructions and available options.
 
-## Twitter Posting
-@todo
+## Contributing
 
-## TODO
-- Implement authentication to protect the `/generate` route.
-- Implement a mechanism to track already posted quotes.
-- Implement automated social media posting using the RSS feed.
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the GitHub repository.
 
-## Resources
-- [Instagram API - Content Publishing Guide](https://developers.facebook.com/docs/instagram-api/guides/content-publishing)
-- [Quotes 500K](https://www.kaggle.com/datasets/manann/quotes-500k?resource=download)
+## License
+
+This library is licensed under the Proprietary License. See the [LICENSE](./LICENSE) file for more information.

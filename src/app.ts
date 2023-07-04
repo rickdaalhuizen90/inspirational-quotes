@@ -1,34 +1,28 @@
-import 'dotenv/config';
-import express, { Application, Request, Response } from 'express';
-import { generateRSSFeed } from './services/FeedService';
-import { generateRandomQuote } from './services/QuoteService';
-import { Db, MongoClient } from 'mongodb';
-import path from 'path';
+import 'dotenv/config'
+import { ImageGenerator, ImageGeneratorOptions } from "./utils/ImageUtils";
+import { imagePath, scanImageDirectory } from './models/ImageModel';
 
-export const app: Application = express();
-const port: number = 3000;
-const url = process.env.DB_URL??'';
-const dbName = process.env.DB_NAME;
+// Example usage
+async function generateExampleImage() {
+  const generatorOptions: ImageGeneratorOptions = {
+    author: 'Your Name',
+    fontFamily: 'Lora',
+    output: process.env.OUTPUT_DIR??'./'
+  };
 
-MongoClient.connect(url)
-  .then(async (client: MongoClient) => {
-    const db: Db = await client.db(dbName);
-    console.log('Connected to MongoDB');
+  const generator = new ImageGenerator(generatorOptions);
 
-    app.locals.db = db;
-    app.get('/feed', generateRSSFeed);
-    app.get('/generate', generateRandomQuote);
+  const images = await scanImageDirectory(imagePath);
+  const path = images[Math.floor(Math.random() * images.length)];
+  const quote = 'Your quote goes here.';
+  const additionalText = 'Additional text goes here.';
 
-    app.get('/pinterest-b1877.html', (req: Request, res: Response) => {
-      const file = path.join(__dirname,'../static/pinterest-b1877.html');
-      res.sendFile(file);
-    });
+  try {
+    const generatedImagePath = await generator.generateImage(path, quote, additionalText);
+    console.log('Image generated:', generatedImagePath);
+  } catch (error) {
+    console.error('Error generating image:', error);
+  }
+}
 
-    app.use('/images', express.static('dist'));
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
-  })
-  .catch((error: any) => {
-    console.error('Failed to connect to MongoDB', error);
-  });
+generateExampleImage();

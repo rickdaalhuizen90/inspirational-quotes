@@ -1,14 +1,14 @@
-import fs from 'fs';
-import crypto from 'crypto';
+import * as fs from 'fs';
+import * as crypto from 'crypto';
 import { createCanvas, loadImage, CanvasRenderingContext2D, Image, registerFont} from 'canvas';
 
-interface ImageGeneratorOptions {
+export interface ImageGeneratorOptions {
   author: string;
   fontFamily?: string;
   output?: string;
 }
 
-class ImageGenerator {
+export class ImageGenerator {
   private author: string;
   private fontFamily: string;
   private output: string;
@@ -122,5 +122,3 @@ class ImageGenerator {
     return wrappedLines;
   }
 }
-
-export { ImageGenerator };

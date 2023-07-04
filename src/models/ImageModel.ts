@@ -1,9 +1,9 @@
 import 'dotenv/config';
 import * as fs from 'fs/promises';
 
-const imagePath = process.env.MEDIA_DIR??'./media';
+export const imagePath: string = process.env.MEDIA_DIR??'./media';
 
-async function scanImageDirectory(directoryPath: string) {
+export async function scanImageDirectory(directoryPath: string) {
   try {
     const files = await fs.readdir(directoryPath);
     const imageFiles = files.filter(file => /\.(jpg|jpeg|png)$/i.test(file));
@@ -13,5 +13,3 @@ async function scanImageDirectory(directoryPath: string) {
     return [];
   }
 }
-
-export { scanImageDirectory, imagePath };
