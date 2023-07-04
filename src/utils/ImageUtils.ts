@@ -23,7 +23,7 @@ class ImageGenerator {
 
   public async generateImage(path: string, quote: string, additionalText: string): Promise<string> {
     const margin = 50; // Margin around the text
-    const maxImageWidth = 800; // Maximum width for the background image
+    const maxImageWidth = 1800; // Maximum width for the background image
 
     const backgroundImage = await loadImage(path);
     const { imageWidth, imageHeight } = this.calculateImageSize(backgroundImage, maxImageWidth);
@@ -72,9 +72,9 @@ class ImageGenerator {
   }
 
   private drawText(context: CanvasRenderingContext2D, quote: string, additionalText: string, imageWidth: number, imageHeight: number, margin: number): void {
-    const fontSize = 32;
-    const additionalFontSize = 24;
-    const bottomFontSize = 16;
+    const fontSize = 64;
+    const additionalFontSize = 34;
+    const bottomFontSize = 24;
 
     context.font = `${fontSize}px ${this.fontFamily}`;
     context.fillStyle = 'white';
