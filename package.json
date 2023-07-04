@@ -11,6 +11,7 @@
   "author": "Rick Daalhuizen",
   "license": "ISC",
   "dependencies": {
+    "@rickdaalhuizen90/text-image-gen": "^1.0.0",
     "@types/rss": "^0.0.30",
     "canvas": "^2.11.2",
     "dotenv": "^16.3.1",

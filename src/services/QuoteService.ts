@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { Document } from 'mongodb';
-import { ImageGenerator } from '../utils/ImageUtils';
-import { scanImageDirectory, imagePath } from '../models/ImageModel';
+import { ImageGenerator } from '@rickdaalhuizen90/text-image-gen';
+import { scanImageDirectory, imagePath } from '@rickdaalhuizen90/text-image-gen';
 import { getRandomQuote } from '../models/QuoteModel';
 import { Db } from 'mongodb';
 import { Request, Response } from 'express';
