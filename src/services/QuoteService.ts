@@ -4,7 +4,7 @@ import { ImageGenerator } from '@rickdaalhuizen90/text-image-gen';
 import { scanImageDirectory, imagePath } from '@rickdaalhuizen90/text-image-gen';
 import { getRandomQuote } from '../models/QuoteModel';
 import { Db } from 'mongodb';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Item } from 'feed';
 import * as fs from 'fs';
 

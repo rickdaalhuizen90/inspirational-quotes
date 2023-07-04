@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import { generateRSSFeed } from './services/FeedService';
 import { generateRandomQuote } from './services/QuoteService';
 import { Db, MongoClient } from 'mongodb';
@@ -17,7 +17,13 @@ MongoClient.connect(url)
 
     app.locals.db = db;
     app.get('/feed', generateRSSFeed);
-    app.get('/generate', generateRandomQuote);
+    app.get('/generate', (req: Request, res: Response, next: NextFunction) => {
+      if (req.get('origin') !== process.env.SITE_URL) {
+        return res.sendStatus(403);
+      }
+    
+      next();
+    }, generateRandomQuote);
 
     app.get('/pinterest-b1877.html', (req: Request, res: Response) => {
       const file = path.join(__dirname,'../static/pinterest-b1877.html');
