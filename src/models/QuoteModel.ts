@@ -1,5 +1,4 @@
-import { Db, Document } from "mongodb";
-import { ObjectId } from "mongodb";
+import { Db, Document, ObjectId } from "mongodb";
 
 export async function getRandomQuote(db: Db): Promise<Document | null> {
   try {
@@ -15,6 +14,15 @@ export async function getRandomQuote(db: Db): Promise<Document | null> {
         { lastSelected: { $lt: pastDate } },
         { lastSelected: null }
       ],
+      $and: [
+        { quote: { $not: /Jezus/i } },
+        { quote: { $not: /Jesus/i } },
+        { quote: { $not: /Bible/i } },
+        { quote: { $not: /God/i } },
+        { quote: { $not: /Christ/i } },
+        { quote: { $not: /Christian/i } },
+        { quote: { $not: /Church/i } }
+      ],
       'quote': { '$type': 'string' },
       'author': { '$type': 'string' },
       $expr: {
@@ -23,7 +31,7 @@ export async function getRandomQuote(db: Db): Promise<Document | null> {
           { $lte: [{ $strLenCP: '$author' }, 20] }
         ]
       }
-    };
+    };    
 
     // Retrieve a random Quote that meets the criteria
     const randomQuote = await collection.aggregate([
