@@ -2,9 +2,9 @@ import 'dotenv/config';
 import { Document } from 'mongodb';
 import { ImageGenerator } from '@rickdaalhuizen90/text-image-gen';
 import { scanImageDirectory, imagePath } from '@rickdaalhuizen90/text-image-gen';
-import { getRandomQuote } from '../models/QuoteModel';
+import { getRandomQuote, updateQuote } from '../models/QuoteModel';
 import { Db } from 'mongodb';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { Item } from 'feed';
 import * as fs from 'fs';
 
@@ -39,6 +39,7 @@ export async function generateRandomQuote(req: Request, res: Response) {
     };
 
     await db.collection('RSSFeed').insertOne(feedItem);
+    await updateQuote(db, quote._id);
     res.sendStatus(200);
 
     console.log('All tasks completed successfully:', quote);
