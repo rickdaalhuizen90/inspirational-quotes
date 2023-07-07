@@ -41,17 +41,6 @@ The image generation process in the application involves the following steps:
 3. Drawing the quote on the canvas using the chosen font and background.
 4. Saving the canvas as an image file.
 
-## Instagram Posting
-@todo
-
-## Twitter Posting
-@todo
-
-## TODO
-- Implement authentication to protect the `/generate` route.
-- Implement a mechanism to track already posted quotes.
-- Implement automated social media posting using the RSS feed.
-
 ## Resources
 - [Instagram API - Content Publishing Guide](https://developers.facebook.com/docs/instagram-api/guides/content-publishing)
 - [Quotes 500K](https://www.kaggle.com/datasets/manann/quotes-500k?resource=download)
